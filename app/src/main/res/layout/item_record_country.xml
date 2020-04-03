@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Estado" />
+            android:text="País" />
 
         <TextView
             android:id="@+id/textViewState"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textStyle="bold"
-            tools:text="Goiás" />
+            tools:text="Brasil" />
 
     </LinearLayout>
 
