@@ -25,8 +25,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.records.observe(viewLifecycleOwner, Observer {
-            textView2.text = it.deceased.toString()
-            textView3.text = it.infected.toString()
+//            textView2.text = it.deceased.toString()
+//            textView3.text = it.infected.toString()
             recyclerView.adapter = HomeAdapter(
                 it.deceasedByRegion.sortedBy { deceased -> deceased.state },
                 it.infectedByRegion.sortedBy { infected -> infected.state })

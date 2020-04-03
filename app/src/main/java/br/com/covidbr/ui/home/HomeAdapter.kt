@@ -32,9 +32,10 @@ class HomeAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(deceasedBy: DeceasedByRegion, infectedBy: InfectedByRegion) {
             with(itemView) {
-                textView4.text = deceasedBy.state
-                textView5.text = deceasedBy.count.toString()
-                textView6.text = infectedBy.count.toString()
+                textView.text = deceasedBy.state
+                textViewState.text = deceasedBy.state
+                textViewDeceased.text = deceasedBy.count.toString()
+                textViewInfected.text = infectedBy.count.toString()
             }
         }
     }
