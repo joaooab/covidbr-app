@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.covidbr.R
 import br.com.covidbr.data.region.DeceasedByRegion
 import br.com.covidbr.data.region.InfectedByRegion
+import br.com.covidbr.data.region.regionMemory
 import kotlinx.android.synthetic.main.item_record_region.view.*
 
 class HomeAdapter(
@@ -33,7 +34,7 @@ class HomeAdapter(
         fun bindView(deceasedBy: DeceasedByRegion, infectedBy: InfectedByRegion) {
             with(itemView) {
                 textView.text = deceasedBy.state
-                textViewState.text = deceasedBy.state
+                textViewState.text = regionMemory.getNameState(deceasedBy.state)
                 textViewDeceased.text = deceasedBy.count.toString()
                 textViewInfected.text = infectedBy.count.toString()
             }
