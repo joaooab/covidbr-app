@@ -1,4 +1,4 @@
-package br.com.covidbr.ui.gallery
+package br.com.covidbr.ui.country
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import br.com.covidbr.data.contry.RecordCountry
 import br.com.covidbr.data.contry.Result
 import kotlinx.coroutines.launch
 
-class GalleryViewModel(val service: CountryService) : ViewModel() {
+class CountryViewModel(val service: CountryService) : ViewModel() {
 
     private val _records: MutableLiveData<RecordCountry> = MutableLiveData()
     val records: LiveData<RecordCountry> = _records

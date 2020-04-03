@@ -8,8 +8,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Brasil</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_news">News</string>
+    <string name="menu_world">Mundo</string>
+    <string name="menu_news">Slideshow</string>
 
     <string name="home_second">Home Second</string>
 </resources>
