@@ -27,10 +27,7 @@ class GalleryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.records.observe(viewLifecycleOwner, Observer {
-            it.result.forEach {json ->
-                json
-            }
-            (it.result[0] as JsonObject).entrySet().
+            it
         })
     }
 }
