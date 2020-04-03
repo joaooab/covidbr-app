@@ -1,6 +1,7 @@
 package br.com.covidbr.di
 
 import br.com.covidbr.data.contry.CountryService
+import br.com.covidbr.data.news.NewsService
 import br.com.covidbr.data.region.RegionService
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -14,6 +15,7 @@ val serviceModule = module {
     single {
         createWebService<CountryService>("https://covidapi.info/api/v1/global/")
     }
+    single { createWebService<NewsService>("http://newsapi.org/v2/") }
 }
 
 inline fun <reified T> createWebService(url: String): T {
