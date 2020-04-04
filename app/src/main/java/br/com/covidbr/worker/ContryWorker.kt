@@ -5,26 +5,26 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import br.com.covidbr.data.Memory
-import br.com.covidbr.data.region.RegionMemory
+import br.com.covidbr.data.contry.ContryMemory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 
-class RegionWorker(appContext: Context, workerParams: WorkerParameters) :
+class ContryWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 
     override fun doWork(): Result {
-        val pdvType = object : TypeToken<List<RegionMemory>>() {}.type
+        val pdvType = object : TypeToken<List<ContryMemory>>() {}.type
         var jsonReader: JsonReader? = null
 
         return try {
-            val inputStream = applicationContext.assets.open("region.json")
+            val inputStream = applicationContext.assets.open("contry.json")
             jsonReader = JsonReader(inputStream.reader())
-            val regionMemories: MutableList<RegionMemory> = Gson().fromJson(jsonReader, pdvType)
-            Memory.regions.addAll(regionMemories)
+            val contryMemories: MutableList<ContryMemory> = Gson().fromJson(jsonReader, pdvType)
+            Memory.CONTRY_MEMORIES.addAll(contryMemories)
             Result.success()
         } catch (ex: Exception) {
-            Log.e(this.javaClass.toString(), "Error worker state", ex)
+            Log.e(this.javaClass.toString(), "Error worker contry", ex)
             Result.failure()
         } finally {
             jsonReader?.close()

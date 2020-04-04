@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.covidbr.R
+import br.com.covidbr.extension.format
 import kotlinx.android.synthetic.main.fragment_country.*
+import kotlinx.android.synthetic.main.include_footer.*
 import org.koin.android.ext.android.inject
-import java.text.DecimalFormat
 
 class CountryFragment : Fragment() {
 
     private val viewModel: CountryViewModel by inject()
-    val formatNumber = "#,###.##"
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -26,19 +26,32 @@ class CountryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeLoading()
+        obsereveRecords()
+    }
+
+    private fun obsereveRecords() {
         viewModel.records.observe(viewLifecycleOwner, Observer {
             fragment_country_recyclerView.adapter = CountryAdapter(
-                    it.result.sortedBy { r -> r.contry })
+                it.result.sortedBy { r -> r.contry })
             val infected = it.result.sumBy { it.confirmed.toInt() }
             val deceased = it.result.sumBy { it.deaths.toInt() }
-            textViewSumInfected.text = formatter(infected)
-            textViewSumDeceased.text = formatter(deceased)
+            textViewSumInfected.text = infected.format()
+            textViewSumDeceased.text = deceased.format()
         })
     }
 
-    fun formatter(numero:Int): String {
-        val formatter = DecimalFormat(formatNumber)
-        val numberFormat = formatter.format(numero)
-        return numberFormat.toString()
+    private fun observeLoading() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { onLoading ->
+            if (onLoading) {
+                fragment_country_recyclerView.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            } else {
+                fragment_country_recyclerView.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
+        })
     }
+
+
 }

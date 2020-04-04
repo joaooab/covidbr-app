@@ -1,6 +1,6 @@
 package br.com.covidbr.data.region
 
-data class RecordRegion(
+data class RegionRespose(
     val deceased: Int,
     val deceasedByRegion: List<DeceasedByRegion>,
     val infected: Int,

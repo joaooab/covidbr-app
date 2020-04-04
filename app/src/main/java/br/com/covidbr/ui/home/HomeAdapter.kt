@@ -5,15 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.covidbr.R
-import br.com.covidbr.data.region.DeceasedByRegion
-import br.com.covidbr.data.region.InfectedByRegion
-import br.com.covidbr.data.region.regionMemory
+import br.com.covidbr.data.region.RegionRecord
+import br.com.covidbr.extension.format
 import kotlinx.android.synthetic.main.item_record_region.view.*
 
-class HomeAdapter(
-    private val deceasedBIES: List<DeceasedByRegion>,
-    private val infectedBIES: List<InfectedByRegion>
-) :
+class HomeAdapter(val records: MutableList<RegionRecord>) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,21 +18,26 @@ class HomeAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = deceasedBIES.size
+    override fun getItemCount(): Int = records.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val deceasedRegion = deceasedBIES[position]
-        val infectedRegion = infectedBIES[position]
-        holder.bindView(deceasedRegion, infectedRegion)
+        val record = records[position]
+        holder.bindView(record)
+    }
+
+    fun changeList(records: MutableList<RegionRecord>) {
+        this.records.clear()
+        this.records.addAll(records)
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(deceasedBy: DeceasedByRegion, infectedBy: InfectedByRegion) {
+        fun bindView(record: RegionRecord) {
             with(itemView) {
-                textView.text = deceasedBy.state
-                textViewState.text = regionMemory.getNameState(deceasedBy.state)
-                textViewDeceased.text = deceasedBy.count.toString()
-                textViewInfected.text = infectedBy.count.toString()
+                textView.text = record.state
+                textViewState.text = record.stateName
+                textViewDeceased.text = record.deceased.format()
+                textViewInfected.text = record.infected.format()
             }
         }
     }

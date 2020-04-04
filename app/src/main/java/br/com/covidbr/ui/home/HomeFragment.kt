@@ -7,8 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.covidbr.R
+import br.com.covidbr.data.region.RegionRecord
+import br.com.covidbr.extension.format
+import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.include_footer.*
 import org.koin.android.ext.android.inject
+
 
 class HomeFragment : Fragment() {
 
@@ -24,12 +29,45 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeRecords()
+        observeLoading()
+        observeSearchView()
+    }
+
+    private fun observeSearchView() {
+        val searchView = activity?.findViewById<MaterialSearchView>(R.id.searchview)
+        searchView?.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                val records = viewModel.filter(newText)
+                (recyclerView.adapter as HomeAdapter).changeList(records)
+                return true
+            }
+        })
+    }
+
+    private fun observeLoading() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { onLoading ->
+            if (onLoading) {
+                recyclerView.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            } else {
+                recyclerView.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun observeRecords() {
         viewModel.records.observe(viewLifecycleOwner, Observer {
-//            textView2.text = it.deceased.toString()
-//            textView3.text = it.infected.toString()
-            recyclerView.adapter = HomeAdapter(
-                it.deceasedByRegion.sortedBy { deceased -> deceased.state },
-                it.infectedByRegion.sortedBy { infected -> infected.state })
+            val records = mutableListOf<RegionRecord>()
+            records.addAll(it.records)
+            recyclerView.adapter = HomeAdapter(records)
+            textViewSumInfected.text = it.infected.format()
+            textViewSumDeceased.text = it.deceased.format()
         })
     }
 }

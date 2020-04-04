@@ -14,6 +14,7 @@
 /viewPagerIndicator_Library/*.iml
 /widgets/*.iml
 gradle-local.properties
+local.properties
 *.php
 *.apk
 gradle-local.properties

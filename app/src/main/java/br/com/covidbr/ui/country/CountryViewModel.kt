@@ -13,10 +13,12 @@ class CountryViewModel(val service: CountryService) : ViewModel() {
 
     private val _records: MutableLiveData<RecordCountry> = MutableLiveData()
     val records: LiveData<RecordCountry> = _records
-    val error: MutableLiveData<String> = MutableLiveData()
+    val onError = MutableLiveData<String>()
+    val isLoading = MutableLiveData<Boolean>()
 
     init {
         viewModelScope.launch {
+            isLoading.value = true
             try {
                 val response = service.getLatest()
                 val results = response.result.map { json ->
@@ -30,7 +32,9 @@ class CountryViewModel(val service: CountryService) : ViewModel() {
                 }
                 _records.value = RecordCountry(response.count, response.date, results)
             } catch (e: Exception) {
-                error.value = e.message
+                onError.value = e.message
+            } finally {
+                isLoading.value = false
             }
         }
     }

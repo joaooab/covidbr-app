@@ -6,6 +6,6 @@ import retrofit2.http.Query
 interface RegionService {
 
     @GET("LATEST")
-    suspend fun getLatest(@Query("disableRedirect") disableRedirect: Boolean = true): RecordRegion
+    suspend fun getLatest(@Query("disableRedirect") disableRedirect: Boolean = true): RegionRespose
 
 }
