@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.home.HomeFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_country_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/white"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_country_card_rodape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fragment_country_card_rodape"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_country_recyclerView"
+        app:layout_constraintStart_toStartOf="@+id/fragment_country_recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_country_recyclerView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragment_country_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#D2D2D2"
+            tools:context=".ui.home.HomeFragment">
+
+        <LinearLayout
+            android:id="@+id/fragment_country_linearLayout_infectados"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_country_card"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_country_linearLayout_mortos"
+            app:layout_constraintStart_toStartOf="@+id/fragment_country_card"
+            app:layout_constraintTop_toTopOf="@+id/fragment_country_card">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:text="Total de Infectados" />
+
+            <TextView
+                android:id="@+id/textViewSumInfected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                tools:text="1.000.000" />
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_country_linearLayout_mortos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_country_linearLayout_infectados"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/fragment_country_linearLayout_infectados"
+                app:layout_constraintTop_toTopOf="@+id/fragment_country_linearLayout_infectados">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="18dp"
+                    android:text="Total de Mortes" />
+
+                <TextView
+                    android:id="@+id/textViewSumDeceased"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    tools:text="80" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
