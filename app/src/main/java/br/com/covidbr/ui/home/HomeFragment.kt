@@ -1,23 +1,27 @@
 package br.com.covidbr.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.covidbr.R
 import br.com.covidbr.data.region.RegionRecord
 import br.com.covidbr.extension.format
+import br.com.covidbr.extension.supportFragmentManager
+import br.com.covidbr.ui.filter.FilterDialog
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_footer.*
 import org.koin.android.ext.android.inject
 
-
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +51,31 @@ class HomeFragment : Fragment() {
                 return true
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.list, menu)
+        val item = menu.findItem(R.id.action_search)
+        val searchView = activity?.findViewById<MaterialSearchView>(R.id.searchview)
+        searchView?.setMenuItem(item)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter -> {
+                openFilterDialog()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun openFilterDialog() {
+        supportFragmentManager {
+            FilterDialog.getInstance {
+                val records = viewModel.order(it)
+                (recyclerView.adapter as HomeAdapter).changeList(records)
+            }.show(this, "")
+        }
     }
 
     private fun observeLoading() {

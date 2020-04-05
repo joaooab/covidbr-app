@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Filtrar"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupOrder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:checkedButton="@+id/radioButtonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/radioGroupType"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <RadioButton
+            android:id="@+id/radioButtonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome" />
+
+        <RadioButton
+            android:id="@+id/radioButtonInfected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Infectados" />
+
+        <RadioButton
+            android:id="@+id/radioButtonDecease"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mortes" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupOrder">
+
+        <Button
+            android:id="@+id/buttonClean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:drawableEnd="@drawable/ic_delete_white_24dp"
+            android:text="limpar"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/buttonApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:drawableEnd="@drawable/ic_done_white_24dp"
+            android:text="aplicar"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Ordenar por:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo ordenação:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/radioGroupType"
+        app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:checkedButton="@+id/radioButtonAsc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/radioGroupOrder"
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+        <RadioButton
+            android:id="@+id/radioButtonAsc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crescente" />
+
+        <RadioButton
+            android:id="@+id/radioButtonDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Decrescente" />
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>
