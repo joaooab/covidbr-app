@@ -1,4 +1,4 @@
-package br.com.covidbr.ui.slideshow
+package br.com.covidbr.ui.news
 
 import android.os.Bundle
 import android.util.Log
@@ -25,11 +25,11 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel.text.observe(viewLifecycleOwner, Observer {
-            text_slideshow.text = it
-        })
         mViewModel.newsResponse.observe(viewLifecycleOwner, Observer {
-            Log.e("teste", "tteste")
+            progressBarArticle.visibility = View.GONE
+            recyclerViewArticles.adapter = ArticleAdapter(it.articles) { article ->
+                Log.e("teste", article.title)
+            }
         })
     }
 }
