@@ -9,6 +9,7 @@ import br.com.covidbr.data.contry.ContryRecord
 import br.com.covidbr.extension.format
 import br.com.covidbr.extension.supportFragmentManager
 import br.com.covidbr.ui.filter.Filter
+import br.com.covidbr.ui.filter.Filter.Companion.ORDER_NAME
 import br.com.covidbr.ui.filter.FilterDialog
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.fragment_country.*
@@ -85,9 +86,20 @@ class CountryFragment : Fragment() {
             FilterDialog.getInstance(filter) {
                 setIconFilter(it)
                 val records = viewModel.order(it)
-                (fragment_country_recyclerView.adapter as CountryAdapter).changeList(records,true)
+                if (it.order == ORDER_NAME) {
+                    changListAdapter(records, false)
+                } else {
+                    changListAdapter(records, true)
+                }
             }.show(this, "")
         }
+    }
+
+    private fun changListAdapter(records: MutableList<ContryRecord>, isOrder: Boolean) {
+        (fragment_country_recyclerView.adapter as CountryAdapter).changeList(
+            records,
+            isOrder
+        )
     }
 
     private fun setIconFilter(filter: Filter) {
@@ -116,8 +128,8 @@ class CountryFragment : Fragment() {
             val records = mutableListOf<ContryRecord>()
             records.addAll(it.records)
             fragment_country_recyclerView.adapter = CountryAdapter(records)
-            val infected = it.records.sumBy { it.confirmed}
-            val deceased = it.records.sumBy { it.deaths}
+            val infected = it.records.sumBy { it.confirmed }
+            val deceased = it.records.sumBy { it.deaths }
             textViewSumInfected.text = infected.format()
             textViewSumDeceased.text = deceased.format()
         })

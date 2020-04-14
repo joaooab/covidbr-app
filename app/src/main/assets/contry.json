@@ -1727,5 +1727,19 @@
     "sigla2": "",
     "sigla3": "SSD",
     "codigo": ""
+  },
+  {
+    "ordem": 248,
+    "nome": "Romênia",
+    "sigla2": "",
+    "sigla3": "ROU",
+    "codigo": ""
+  },
+  {
+    "ordem": 249,
+    "nome": "Timor-Leste",
+    "sigla2": "",
+    "sigla3": "TLS",
+    "codigo": ""
   }
 ]
