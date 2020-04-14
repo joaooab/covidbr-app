@@ -1,7 +1,7 @@
 package br.com.covidbr.data.contry
 
-data class RecordCountry(
+data class Contry(
         val count: Int,
         val date: String,
-        val result: List<Result>
+        val records: MutableList<ContryRecord>
 )

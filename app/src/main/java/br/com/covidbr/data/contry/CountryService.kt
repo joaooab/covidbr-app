@@ -5,5 +5,5 @@ import retrofit2.http.GET
 interface CountryService {
 
     @GET("latest")
-    suspend fun getLatest(): RecordCountryResponse
+    suspend fun getLatest(): CountryResponse
 }

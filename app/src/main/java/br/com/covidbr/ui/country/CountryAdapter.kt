@@ -5,14 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.covidbr.R
-import br.com.covidbr.data.Memory
-import br.com.covidbr.data.contry.Result
+import br.com.covidbr.data.contry.ContryRecord
+import br.com.covidbr.extension.format
 import kotlinx.android.synthetic.main.item_record_country.view.*
 
 
-class CountryAdapter(
-    private val info: List<Result>
-) :
+class CountryAdapter(val records: MutableList<ContryRecord>) :
     RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,20 +19,26 @@ class CountryAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = info.size
+    override fun getItemCount(): Int = records.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val infoCountry = info[position]
+        val infoCountry = records[position]
         holder.bindView(infoCountry)
     }
 
+    fun changeList(records: MutableList<ContryRecord>) {
+        this.records.clear()
+        this.records.addAll(records)
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(info: Result) {
+        fun bindView(record: ContryRecord) {
             with(itemView) {
-                textView.text = info.contry
-                textViewState.text = Memory.getNameContry(info.contry)
-                textViewInfected.text = info.confirmed.format()
-                textViewDeceased.text = info.deaths.format()
+                textView.text = record.contry
+                textViewState.text = record.contryName
+                textViewInfected.text = record.confirmed.format()
+                textViewDeceased.text = record.deaths.format()
             }
         }
     }
