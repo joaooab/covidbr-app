@@ -35,6 +35,13 @@ class CountryFragment : Fragment() {
         observeLoading()
         obsereveRecords()
         observeSearchView()
+        observerError()
+    }
+
+    private fun observerError() {
+        viewModel.onError.observe(viewLifecycleOwner, Observer {
+            textViewNadaEncontrado.visibility = View.VISIBLE
+        })
     }
 
     private fun observeSearchView() {
