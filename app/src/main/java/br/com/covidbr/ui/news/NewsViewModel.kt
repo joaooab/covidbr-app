@@ -1,4 +1,4 @@
-package br.com.covidbr.ui.slideshow
+package br.com.covidbr.ui.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,11 +9,6 @@ import br.com.covidbr.data.news.NewsService
 import kotlinx.coroutines.launch
 
 class NewsViewModel(private val service: NewsService) : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
-    }
-    val text: LiveData<String> = _text
 
     private val _newsResponse = MutableLiveData<NewsResponse>()
     val newsResponse: LiveData<NewsResponse> = _newsResponse
