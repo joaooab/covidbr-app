@@ -14,7 +14,7 @@
             android:title="@string/menu_world" />
         <item
             android:id="@+id/nav_news"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_announcement_black_24dp"
             android:title="@string/menu_news"
             android:visible="false"/>
     </group>

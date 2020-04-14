@@ -9,7 +9,7 @@
 
     <string name="menu_home">Brasil</string>
     <string name="menu_world">Mundo</string>
-    <string name="menu_news">Slideshow</string>
+    <string name="menu_news">Notícias</string>
 
     <string name="search">Pesquisar</string>
     <string name="nada_encontrado">Nada encontrado.\nVerifique conexão com a internet!</string>

@@ -14,7 +14,7 @@ interface NewsService {
     @GET("everything")
     suspend fun getEverything(
         @Query("q") q: String,
-        @Query("language") language: String = "pt-br",
+        @Query("language") language: String = "pt",
         @Query("apiKey") apiKey: String = "7f441739559540f68649036e2647ca07"
     ): NewsResponse
 }
