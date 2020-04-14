@@ -9,7 +9,7 @@ import br.com.covidbr.data.region.RegionRecord
 import br.com.covidbr.extension.format
 import kotlinx.android.synthetic.main.item_record_region.view.*
 
-class HomeAdapter(val records: MutableList<RegionRecord>) :
+class HomeAdapter(val records: MutableList<RegionRecord>, private var order: Boolean = false) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,19 +22,21 @@ class HomeAdapter(val records: MutableList<RegionRecord>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val record = records[position]
-        holder.bindView(record)
+        holder.bindView(record, position, order)
     }
 
-    fun changeList(records: MutableList<RegionRecord>) {
+    fun changeList(records: MutableList<RegionRecord>, order:Boolean = false) {
         this.records.clear()
         this.records.addAll(records)
+        this.order = order
         notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(record: RegionRecord) {
+        fun bindView(record: RegionRecord, position: Int, order: Boolean) {
             with(itemView) {
-                textView.text = record.state
+                if(order){textView.text = (position+1).toString()+" º"}
+                else{textView.text = record.state}
                 textViewState.text = record.stateName
                 textViewDeceased.text = record.deceased.format()
                 textViewInfected.text = record.infected.format()

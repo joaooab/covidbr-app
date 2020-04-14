@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.covidbr.R
+import br.com.covidbr.data.contry.ContryRecord
 import br.com.covidbr.extension.format
 import br.com.covidbr.extension.supportFragmentManager
 import br.com.covidbr.ui.filter.Filter
@@ -36,7 +37,7 @@ class CountryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeLoading()
-        obsereveRecords()
+        observeRecords()
         observeSearchView()
         observerError()
     }
@@ -84,7 +85,7 @@ class CountryFragment : Fragment() {
             FilterDialog.getInstance(filter) {
                 setIconFilter(it)
                 val records = viewModel.order(it)
-                (fragment_country_recyclerView.adapter as CountryAdapter).changeList(records)
+                (fragment_country_recyclerView.adapter as CountryAdapter).changeList(records,true)
             }.show(this, "")
         }
     }
@@ -96,18 +97,6 @@ class CountryFragment : Fragment() {
         } else {
             menuFilter?.setIcon(R.drawable.ic_filter_checked)
         }
-    }
-
-    private fun obsereveRecords() {
-        viewModel.records.observe(viewLifecycleOwner, Observer {
-            fragment_country_recyclerView.adapter = CountryAdapter(
-                it.records.sortedBy { r -> r.contry }.toMutableList()
-            )
-            val infected = it.records.sumBy { it.confirmed.toInt() }
-            val deceased = it.records.sumBy { it.deaths.toInt() }
-            textViewSumInfected.text = infected.format()
-            textViewSumDeceased.text = deceased.format()
-        })
     }
 
     private fun observeLoading() {
@@ -122,5 +111,16 @@ class CountryFragment : Fragment() {
         })
     }
 
+    private fun observeRecords() {
+        viewModel.records.observe(viewLifecycleOwner, Observer {
+            val records = mutableListOf<ContryRecord>()
+            records.addAll(it.records)
+            fragment_country_recyclerView.adapter = CountryAdapter(records)
+            val infected = it.records.sumBy { it.confirmed}
+            val deceased = it.records.sumBy { it.deaths}
+            textViewSumInfected.text = infected.format()
+            textViewSumDeceased.text = deceased.format()
+        })
+    }
 
 }

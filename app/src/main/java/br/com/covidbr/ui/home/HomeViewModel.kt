@@ -41,7 +41,7 @@ class HomeViewModel(val repository: RegionRepository) : ViewModel() {
         } else {
             val query = newText.toUpperCase(Locale.getDefault()).unaccent()
             records.filter {
-                val stateName = it.stateName.toUpperCase(Locale.getDefault())
+                val stateName = it.stateName.toUpperCase(Locale.getDefault()).unaccent()
                 stateName.contains(query)
             }.toMutableList()
         }

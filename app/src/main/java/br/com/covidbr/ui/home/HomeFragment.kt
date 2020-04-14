@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
             FilterDialog.getInstance(filter) {
                 setIconFilter(it)
                 val records = viewModel.order(it)
-                (recyclerView.adapter as HomeAdapter).changeList(records)
+                (recyclerView.adapter as HomeAdapter).changeList(records,true)
             }.show(this, "")
         }
     }
