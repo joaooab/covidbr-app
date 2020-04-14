@@ -21,7 +21,7 @@ class RegionWorker(appContext: Context, workerParams: WorkerParameters) :
             val inputStream = applicationContext.assets.open("region.json")
             jsonReader = JsonReader(inputStream.reader())
             val regionMemories: MutableList<RegionMemory> = Gson().fromJson(jsonReader, pdvType)
-            Memory.regions.addAll(regionMemories)
+            Memory.REGION_MEMORIES.addAll(regionMemories)
             Result.success()
         } catch (ex: Exception) {
             Log.e(this.javaClass.toString(), "Error worker state", ex)
