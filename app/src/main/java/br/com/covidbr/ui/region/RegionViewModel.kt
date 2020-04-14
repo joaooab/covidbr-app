@@ -51,14 +51,14 @@ class RegionViewModel(val repository: RegionRepository) : ViewModel() {
         if (this.filter == null) return records
         if (filter?.type == Filter.TYPE_ASC) {
             when(filter?.order) {
-                Filter.ORDER_NAME -> records.sortBy { it.stateName }
+                Filter.ORDER_NAME -> records.sortBy { it.stateName.unaccent() }
                 Filter.ORDER_DECEASE -> records.sortBy { it.deceased }
                 Filter.ORDER_INFECTED -> records.sortBy { it.infected }
                 else -> throw IllegalArgumentException("Filter invalid")
             }
         } else {
             when(filter?.order) {
-                Filter.ORDER_NAME -> records.sortByDescending { it.stateName }
+                Filter.ORDER_NAME -> records.sortByDescending { it.stateName.unaccent() }
                 Filter.ORDER_DECEASE -> records.sortByDescending { it.deceased }
                 Filter.ORDER_INFECTED -> records.sortByDescending { it.infected }
                 else -> throw IllegalArgumentException("Filter invalid")

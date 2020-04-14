@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.covidbr.data.contry.CountryRepository
 import br.com.covidbr.data.contry.Contry
 import br.com.covidbr.data.contry.ContryRecord
+import br.com.covidbr.data.contry.CountryRepository
 import br.com.covidbr.extension.unaccent
 import br.com.covidbr.ui.filter.Filter
 import kotlinx.coroutines.launch
@@ -49,14 +49,14 @@ class CountryViewModel(val repository: CountryRepository) : ViewModel() {
         if (this.filter == null) return records
         if (filter?.type == Filter.TYPE_ASC) {
             when (filter?.order) {
-                Filter.ORDER_NAME -> records.sortBy { it.contryName }
+                Filter.ORDER_NAME -> records.sortBy { it.contryName.unaccent() }
                 Filter.ORDER_DECEASE -> records.sortBy { it.deaths }
                 Filter.ORDER_INFECTED -> records.sortBy { it.confirmed }
                 else -> throw IllegalArgumentException("Filter invalid")
             }
         } else {
             when (filter?.order) {
-                Filter.ORDER_NAME -> records.sortByDescending { it.contryName }
+                Filter.ORDER_NAME -> records.sortByDescending { it.contryName.unaccent() }
                 Filter.ORDER_DECEASE -> records.sortByDescending { it.deaths }
                 Filter.ORDER_INFECTED -> records.sortByDescending { it.confirmed }
                 else -> throw IllegalArgumentException("Filter invalid")

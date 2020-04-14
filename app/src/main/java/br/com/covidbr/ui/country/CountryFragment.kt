@@ -44,7 +44,7 @@ class CountryFragment : Fragment() {
 
     private fun observerError() {
         viewModel.onError.observe(viewLifecycleOwner, Observer {
-            textViewNadaEncontrado.visibility = View.VISIBLE
+            textViewNotFound.visibility = View.VISIBLE
         })
     }
 
@@ -85,7 +85,7 @@ class CountryFragment : Fragment() {
 
     private fun openFilterDialog() {
         supportFragmentManager {
-            FilterDialog.getInstance(filter) {
+            FilterDialog.getInstance(filter, "Países") {
                 setIconFilter(it)
                 val records = viewModel.order(it)
                 (fragment_country_recyclerView.adapter as CountryAdapter).changeList(

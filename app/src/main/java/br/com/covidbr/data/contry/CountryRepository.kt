@@ -18,7 +18,7 @@ class CountryRepositoryImpl(val service: CountryService) : CountryRepository {
             val recovered = jsonContent["recovered"].asInt
 
             ContryRecord(key, contry, confirmed, deaths, recovered)
-        }.sortedBy { it.contry }
+        }.filter { it.contryName.isNotEmpty() }.sortedBy { it.contry }
 
         return Contry(response.count, response.date, results.toMutableList())
     }

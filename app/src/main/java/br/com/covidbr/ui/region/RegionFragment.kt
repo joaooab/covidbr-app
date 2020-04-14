@@ -44,7 +44,7 @@ class RegionFragment : Fragment() {
 
     private fun observerError() {
         viewModel.onError.observe(viewLifecycleOwner, Observer {
-            textViewNadaEncontrado.visibility = View.VISIBLE
+            textViewNotFound.visibility = View.VISIBLE
         })
     }
 
