@@ -1,23 +1,23 @@
-package br.com.covidbr.ui.country
+package br.com.covidbr.ui.region
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.covidbr.R
-import br.com.covidbr.data.contry.ContryRecord
+import br.com.covidbr.data.region.RegionRecord
 import br.com.covidbr.extension.format
 import br.com.covidbr.extension.supportFragmentManager
 import br.com.covidbr.ui.filter.Filter
 import br.com.covidbr.ui.filter.FilterDialog
 import com.miguelcatalan.materialsearchview.MaterialSearchView
-import kotlinx.android.synthetic.main.fragment_country.*
+import kotlinx.android.synthetic.main.fragment_region.*
 import kotlinx.android.synthetic.main.include_footer.*
 import org.koin.android.ext.android.inject
 
-class CountryFragment : Fragment() {
+class RegionFragment : Fragment() {
 
-    private val viewModel: CountryViewModel by inject()
+    private val viewModel: RegionViewModel by inject()
     private var menuFilter: MenuItem? = null
     private var filter: Filter = Filter()
 
@@ -31,13 +31,13 @@ class CountryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_country, container, false)
+        return inflater.inflate(R.layout.fragment_region, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeLoading()
         observeRecords()
+        observeLoading()
         observeSearchView()
         observerError()
     }
@@ -57,10 +57,7 @@ class CountryFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 val records = viewModel.filter(newText)
-                (fragment_country_recyclerView.adapter as CountryAdapter).changeList(
-                    records,
-                    filter
-                )
+                (recyclerView.adapter as RegionAdapter).changeList(records, filter)
                 return true
             }
         })
@@ -88,7 +85,7 @@ class CountryFragment : Fragment() {
             FilterDialog.getInstance(filter) {
                 setIconFilter(it)
                 val records = viewModel.order(it)
-                (fragment_country_recyclerView.adapter as CountryAdapter).changeList(
+                (recyclerView.adapter as RegionAdapter).changeList(
                     records,
                     filter
                 )
@@ -108,10 +105,10 @@ class CountryFragment : Fragment() {
     private fun observeLoading() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { onLoading ->
             if (onLoading) {
-                fragment_country_recyclerView.visibility = View.GONE
+                recyclerView.visibility = View.GONE
                 progressBar.visibility = View.VISIBLE
             } else {
-                fragment_country_recyclerView.visibility = View.VISIBLE
+                recyclerView.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
             }
         })
@@ -119,14 +116,11 @@ class CountryFragment : Fragment() {
 
     private fun observeRecords() {
         viewModel.records.observe(viewLifecycleOwner, Observer {
-            val records = mutableListOf<ContryRecord>()
+            val records = mutableListOf<RegionRecord>()
             records.addAll(it.records)
-            fragment_country_recyclerView.adapter = CountryAdapter(records)
-            val infected = it.records.sumBy { it.confirmed }
-            val deceased = it.records.sumBy { it.deaths }
-            textViewSumInfected.text = infected.format()
-            textViewSumDeceased.text = deceased.format()
+            recyclerView.adapter = RegionAdapter(records)
+            textViewSumInfected.text = it.infected.format()
+            textViewSumDeceased.text = it.deceased.format()
         })
     }
-
 }

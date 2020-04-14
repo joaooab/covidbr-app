@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_region"
+        android:name="br.com.covidbr.ui.region.RegionFragment"
+        android:label="@string/menu_region"
+        tools:layout="@layout/fragment_region" />
+
+    <fragment
         android:id="@+id/nav_gallery"
         android:name="br.com.covidbr.ui.country.CountryFragment"
         android:label="@string/menu_world"

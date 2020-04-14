@@ -1,7 +1,12 @@
 package br.com.covidbr.ui.home
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.covidbr.R
@@ -10,6 +15,7 @@ import br.com.covidbr.extension.format
 import br.com.covidbr.extension.supportFragmentManager
 import br.com.covidbr.ui.filter.Filter
 import br.com.covidbr.ui.filter.FilterDialog
+import br.com.covidbr.ui.region.RegionViewModel
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.include_footer.*
@@ -17,14 +23,20 @@ import org.koin.android.ext.android.inject
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by inject()
-    private var menuFilter: MenuItem? = null
-    private var filter: Filter = Filter()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+//    companion object {
+//        fun newInstance(fragment: Fragment): DialogWebViewFragment {
+//            val dialog = DialogWebViewFragment()
+//            dialog.simpleNameFragment = fragment.javaClass.simpleName
+//            return dialog
+//        }
+//    }
+//
+//    private lateinit var simpleNameFragment: String
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setStyle(STYLE_NORMAL, R.style.AppTheme)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,101 +46,56 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeRecords()
-        observeLoading()
-        observeSearchView()
-        observerError()
+        val link = "https://covid.saude.gov.br/"
+        setUpSettings()
+        setUpClient()
+        webView.loadUrl(link)
     }
 
-    private fun observerError() {
-        viewModel.onError.observe(viewLifecycleOwner, Observer {
-            textViewNadaEncontrado.visibility = View.VISIBLE
-        })
-    }
+//    private fun showError() {
+//        Toast.makeText(
+//            context,
+//            "Não foi possível abrir artigo da base de conhecimento, por favor tente mais tarde",
+//            Toast.LENGTH_LONG
+//        ).show()
+//    }
 
-    private fun observeSearchView() {
-        val searchView = activity?.findViewById<MaterialSearchView>(R.id.searchview)
-        searchView?.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return true
+    private fun setUpClient() {
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                showProgress()
             }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                val records = viewModel.filter(newText)
-                (recyclerView.adapter as HomeAdapter).changeList(records)
-                return true
-            }
-        })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.list, menu)
-        val item = menu.findItem(R.id.action_search)
-        val searchView = activity?.findViewById<MaterialSearchView>(R.id.searchview)
-        searchView?.setMenuItem(item)
-        menuFilter = menu.findItem(R.id.action_filter)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_filter -> {
-                openFilterDialog()
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                removeProgress()
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 
-    private fun openFilterDialog() {
-        supportFragmentManager {
-            FilterDialog.getInstance(filter) {
-                setIconFilter(it)
-                val records = viewModel.order(it)
-                if (it.order == Filter.ORDER_NAME) {
-                    changListAdapter(records, false)
-                } else {
-                    changListAdapter(records, true)
-                }
-            }.show(this, "")
+    private fun removeProgress() {
+        progressBar.visibility = View.GONE
+        webView.visibility = View.VISIBLE
+    }
+
+    private fun showProgress() {
+        progressBar.visibility = View.VISIBLE
+        webView.visibility = View.GONE
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun setUpSettings() {
+        webView.settings.apply {
+            useWideViewPort = true
+            loadWithOverviewMode = true
+            builtInZoomControls = true
+            displayZoomControls = false
+            javaScriptEnabled = true
         }
     }
 
-    private fun changListAdapter(records: MutableList<RegionRecord>, isOrder: Boolean) {
-        (recyclerView.adapter as HomeAdapter).changeList(
-            records,
-            isOrder
-        )
-    }
-
-    private fun setIconFilter(filter: Filter) {
-        this.filter = filter
-        if (FilterDialog.isFilterDefault(filter)) {
-            menuFilter?.setIcon(R.drawable.ic_filter_list_white_24dp)
-        } else {
-            menuFilter?.setIcon(R.drawable.ic_filter_checked)
-        }
-    }
-
-    private fun observeLoading() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { onLoading ->
-            if (onLoading) {
-                recyclerView.visibility = View.GONE
-                progressBar.visibility = View.VISIBLE
-            } else {
-                recyclerView.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
-            }
-        })
-    }
-
-    private fun observeRecords() {
-        viewModel.records.observe(viewLifecycleOwner, Observer {
-            val records = mutableListOf<RegionRecord>()
-            records.addAll(it.records)
-            recyclerView.adapter = HomeAdapter(records)
-            textViewSumInfected.text = it.infected.format()
-            textViewSumDeceased.text = it.deceased.format()
-        })
-    }
 }

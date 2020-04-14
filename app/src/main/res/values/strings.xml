@@ -7,8 +7,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_filter">Filter</string>
 
-    <string name="menu_home">Brasil</string>
-    <string name="menu_world">Mundo</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_region">Estados</string>
+    <string name="menu_world">Países</string>
     <string name="menu_news">Notícias</string>
 
     <string name="search">Pesquisar</string>

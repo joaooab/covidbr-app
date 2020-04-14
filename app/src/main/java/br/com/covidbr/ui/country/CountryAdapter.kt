@@ -7,15 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.covidbr.R
 import br.com.covidbr.data.contry.ContryRecord
 import br.com.covidbr.extension.format
+import br.com.covidbr.ui.filter.Filter
+import br.com.covidbr.ui.filter.Filter.Companion.ORDER_NAME
 import kotlinx.android.synthetic.main.item_record_country.view.*
 
 
-class CountryAdapter(val records: MutableList<ContryRecord>, private var order: Boolean = false) :
-        RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
+class CountryAdapter(
+    val records: MutableList<ContryRecord>,
+    private var filter: Filter = Filter()
+) :
+    RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_record_country, parent, false)
+            .inflate(R.layout.item_record_country, parent, false)
         return ViewHolder(view)
     }
 
@@ -23,21 +28,25 @@ class CountryAdapter(val records: MutableList<ContryRecord>, private var order: 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val infoCountry = records[position]
-        holder.bindView(infoCountry, position, order)
+        holder.bindView(infoCountry, position, filter)
     }
 
-    fun changeList(records: MutableList<ContryRecord>, order: Boolean = false) {
+    fun changeList(records: MutableList<ContryRecord>, filter: Filter) {
         this.records.clear()
         this.records.addAll(records)
-        this.order = order
+        this.filter = filter
         notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(record: ContryRecord, position: Int, order: Boolean) {
+        fun bindView(record: ContryRecord, position: Int, filter: Filter) {
             with(itemView) {
-                if (order) {textView.text = (position + 1).toString() + " º"}
-                else {textView.text = record.contry}
+                if (filter.order == ORDER_NAME) {
+                    textView.text = record.contry
+                } else {
+                    val postion = (position + 1).toString() + "º"
+                    textView.text = postion
+                }
                 textViewState.text = record.contryName
                 textViewInfected.text = record.confirmed.format()
                 textViewDeceased.text = record.deaths.format()
