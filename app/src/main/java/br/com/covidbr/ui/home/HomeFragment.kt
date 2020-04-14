@@ -8,6 +8,7 @@ import br.com.covidbr.R
 import br.com.covidbr.data.region.RegionRecord
 import br.com.covidbr.extension.format
 import br.com.covidbr.extension.supportFragmentManager
+import br.com.covidbr.ui.filter.Filter
 import br.com.covidbr.ui.filter.FilterDialog
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -17,6 +18,8 @@ import org.koin.android.ext.android.inject
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by inject()
+    private var menuFilter: MenuItem? = null
+    private var filter: Filter = Filter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,7 @@ class HomeFragment : Fragment() {
         val item = menu.findItem(R.id.action_search)
         val searchView = activity?.findViewById<MaterialSearchView>(R.id.searchview)
         searchView?.setMenuItem(item)
+        menuFilter = menu.findItem(R.id.action_filter)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -78,10 +82,20 @@ class HomeFragment : Fragment() {
 
     private fun openFilterDialog() {
         supportFragmentManager {
-            FilterDialog.getInstance {
+            FilterDialog.getInstance(filter) {
+                setIconFilter(it)
                 val records = viewModel.order(it)
                 (recyclerView.adapter as HomeAdapter).changeList(records)
             }.show(this, "")
+        }
+    }
+
+    private fun setIconFilter(filter: Filter) {
+        this.filter = filter
+        if (FilterDialog.isFilterDefault(filter)) {
+            menuFilter?.setIcon(R.drawable.ic_filter_list_white_24dp)
+        } else {
+            menuFilter?.setIcon(R.drawable.ic_filter_checked)
         }
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.fragment.app.DialogFragment
 import br.com.covidbr.R
 import br.com.covidbr.ui.filter.Filter.Companion.ORDER_DECEASE
@@ -17,16 +18,23 @@ class FilterDialog : DialogFragment() {
 
     private lateinit var onFinished: (filter: Filter) -> Unit
     private lateinit var type: String
+    private lateinit var filter: Filter
 
     companion object {
         fun getInstance(
+            filter: Filter,
             type: String = "Estado",
             onFinished: (filter: Filter) -> Unit
         ): FilterDialog {
             return FilterDialog().apply {
                 this.onFinished = onFinished
                 this.type = type
+                this.filter = filter
             }
+        }
+
+        fun isFilterDefault(filter: Filter): Boolean {
+            return filter.order == ORDER_NAME && filter.type == TYPE_ASC
         }
     }
 
@@ -49,8 +57,29 @@ class FilterDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         radioButtonName.text = type
+        setupFilterOrder()
+        setupFilterType()
         setupButtonApply()
         setupClean()
+    }
+
+    private fun setupFilterType() {
+        when (filter.type) {
+            TYPE_ASC -> checkButton(radioButtonAsc)
+            TYPE_DESC -> checkButton(radioButtonDesc)
+        }
+    }
+
+    private fun setupFilterOrder() {
+        when (filter.order) {
+            ORDER_NAME -> checkButton(radioButtonName)
+            ORDER_INFECTED -> checkButton(radioButtonInfected)
+            ORDER_DECEASE -> checkButton(radioButtonDecease)
+        }
+    }
+
+    private fun checkButton(radioButton: RadioButton) {
+        radioButton.isChecked = true
     }
 
     private fun setupClean() {

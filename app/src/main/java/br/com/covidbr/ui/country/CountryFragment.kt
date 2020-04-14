@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import br.com.covidbr.R
 import br.com.covidbr.extension.format
 import br.com.covidbr.extension.supportFragmentManager
+import br.com.covidbr.ui.filter.Filter
 import br.com.covidbr.ui.filter.FilterDialog
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.fragment_country.*
@@ -16,6 +17,8 @@ import org.koin.android.ext.android.inject
 class CountryFragment : Fragment() {
 
     private val viewModel: CountryViewModel by inject()
+    private var menuFilter: MenuItem? = null
+    private var filter: Filter = Filter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +26,9 @@ class CountryFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_country, container, false)
     }
@@ -64,6 +67,7 @@ class CountryFragment : Fragment() {
         val item = menu.findItem(R.id.action_search)
         val searchView = activity?.findViewById<MaterialSearchView>(R.id.searchview)
         searchView?.setMenuItem(item)
+        menuFilter = menu.findItem(R.id.action_filter)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -77,17 +81,28 @@ class CountryFragment : Fragment() {
 
     private fun openFilterDialog() {
         supportFragmentManager {
-            FilterDialog.getInstance {
+            FilterDialog.getInstance(filter) {
+                setIconFilter(it)
                 val records = viewModel.order(it)
                 (fragment_country_recyclerView.adapter as CountryAdapter).changeList(records)
             }.show(this, "")
         }
     }
 
+    private fun setIconFilter(filter: Filter) {
+        this.filter = filter
+        if (FilterDialog.isFilterDefault(filter)) {
+            menuFilter?.setIcon(R.drawable.ic_filter_list_white_24dp)
+        } else {
+            menuFilter?.setIcon(R.drawable.ic_filter_checked)
+        }
+    }
+
     private fun obsereveRecords() {
         viewModel.records.observe(viewLifecycleOwner, Observer {
             fragment_country_recyclerView.adapter = CountryAdapter(
-                    it.records.sortedBy { r -> r.contry }.toMutableList())
+                it.records.sortedBy { r -> r.contry }.toMutableList()
+            )
             val infected = it.records.sumBy { it.confirmed.toInt() }
             val deceased = it.records.sumBy { it.deaths.toInt() }
             textViewSumInfected.text = infected.format()

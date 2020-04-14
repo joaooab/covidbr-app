@@ -1,8 +1,8 @@
 package br.com.covidbr.ui.filter
 
 data class Filter(
-    val order: String,
-    val type: String
+    val order: String = ORDER_NAME,
+    val type: String = TYPE_ASC
 ) {
     companion object {
         const val ORDER_NAME = "ORDER_NAME"
