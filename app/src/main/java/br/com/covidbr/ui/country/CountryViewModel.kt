@@ -40,7 +40,7 @@ class CountryViewModel(val repository: CountryRepository) : ViewModel() {
         } else {
             val query = newText.toUpperCase(Locale.getDefault()).unaccent()
             records.filter {
-                it.contryName.toUpperCase(Locale.getDefault()).contains(query)
+                it.contryName.toUpperCase(Locale.getDefault()).unaccent().contains(query)
             }.toMutableList()
         }
     }
