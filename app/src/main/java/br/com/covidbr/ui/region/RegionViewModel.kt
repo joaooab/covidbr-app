@@ -8,7 +8,7 @@ import br.com.covidbr.data.region.Region
 import br.com.covidbr.data.region.RegionRecord
 import br.com.covidbr.data.region.RegionRepository
 import br.com.covidbr.extension.unaccent
-import br.com.covidbr.ui.filter.Filter
+import br.com.covidbr.data.Filter
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 import java.util.*

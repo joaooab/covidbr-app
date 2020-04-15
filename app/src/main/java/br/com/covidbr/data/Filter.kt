@@ -1,4 +1,4 @@
-package br.com.covidbr.ui.filter
+package br.com.covidbr.data
 
 data class Filter(
     val order: String = ORDER_NAME,

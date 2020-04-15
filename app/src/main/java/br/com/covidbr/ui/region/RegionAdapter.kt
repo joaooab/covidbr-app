@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.covidbr.R
 import br.com.covidbr.data.region.RegionRecord
 import br.com.covidbr.extension.format
-import br.com.covidbr.ui.filter.Filter
+import br.com.covidbr.data.Filter
 import kotlinx.android.synthetic.main.item_record_region.view.*
 
 class RegionAdapter(val records: MutableList<RegionRecord>, private var filter: Filter = Filter()) :

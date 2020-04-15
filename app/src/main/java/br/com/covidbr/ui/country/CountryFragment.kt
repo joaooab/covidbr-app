@@ -8,18 +8,20 @@ import br.com.covidbr.R
 import br.com.covidbr.data.contry.ContryRecord
 import br.com.covidbr.extension.format
 import br.com.covidbr.extension.supportFragmentManager
-import br.com.covidbr.ui.filter.Filter
+import br.com.covidbr.data.Filter
 import br.com.covidbr.ui.filter.FilterDialog
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.fragment_country.*
 import kotlinx.android.synthetic.main.include_footer.*
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CountryFragment : Fragment() {
 
-    private val viewModel: CountryViewModel by inject()
+    private val viewModel: CountryViewModel by viewModel()
     private var menuFilter: MenuItem? = null
-    private var filter: Filter = Filter()
+    private var filter: Filter =
+        Filter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,20 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.covidbr.data.dashboard.Dashboard
+import br.com.covidbr.data.dashboard.DashboardRepository
 import br.com.covidbr.data.region.Region
-import br.com.covidbr.data.region.RegionRecord
 import br.com.covidbr.data.region.RegionRepository
-import br.com.covidbr.extension.unaccent
-import br.com.covidbr.ui.filter.Filter
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
-import java.util.*
 
-class HomeViewModel(val repository: RegionRepository) : ViewModel() {
+class HomeViewModel(
+    val regionRepository: RegionRepository,
+    val dashboardRepository: DashboardRepository
+) : ViewModel() {
 
     private val _records: MutableLiveData<Region> = MutableLiveData()
-    private var filter: Filter? = null
     val records: LiveData<Region> = _records
+    private val _dashboard: MutableLiveData<MutableList<Dashboard>> = MutableLiveData()
+    val dashboard: LiveData<MutableList<Dashboard>> = _dashboard
     val onError = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
 
@@ -25,7 +26,8 @@ class HomeViewModel(val repository: RegionRepository) : ViewModel() {
         viewModelScope.launch {
             isLoading.value = true
             try {
-                _records.value = repository.getLatest()
+                _records.value = regionRepository.getLatest()
+                _dashboard.value = dashboardRepository.getItens()
             } catch (e: Exception) {
                 onError.value = e.message
             } finally {
@@ -33,48 +35,6 @@ class HomeViewModel(val repository: RegionRepository) : ViewModel() {
             }
         }
     }
-
-    fun filter(newText: String): MutableList<RegionRecord> {
-        val records = getRecords()
-        return if (newText.isEmpty()) {
-            records
-        } else {
-            val query = newText.toUpperCase(Locale.getDefault()).unaccent()
-            records.filter {
-                val stateName = it.stateName.toUpperCase(Locale.getDefault()).unaccent()
-                stateName.contains(query)
-            }.toMutableList()
-        }
-    }
-
-    private fun order(records: MutableList<RegionRecord>): MutableList<RegionRecord> {
-        if (this.filter == null) return records
-        if (filter?.type == Filter.TYPE_ASC) {
-            when(filter?.order) {
-                Filter.ORDER_NAME -> records.sortBy { it.stateName }
-                Filter.ORDER_DECEASE -> records.sortBy { it.deceased }
-                Filter.ORDER_INFECTED -> records.sortBy { it.infected }
-                else -> throw IllegalArgumentException("Filter invalid")
-            }
-        } else {
-            when(filter?.order) {
-                Filter.ORDER_NAME -> records.sortByDescending { it.stateName }
-                Filter.ORDER_DECEASE -> records.sortByDescending { it.deceased }
-                Filter.ORDER_INFECTED -> records.sortByDescending { it.infected }
-                else -> throw IllegalArgumentException("Filter invalid")
-            }
-        }
-
-        return records
-    }
-
-    fun order(filter: Filter): MutableList<RegionRecord> {
-        this.filter = filter
-        val records = getRecords()
-        return order(records)
-    }
-
-    private fun getRecords() = _records.value?.records ?: mutableListOf()
 
 }
 

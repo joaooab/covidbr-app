@@ -8,7 +8,7 @@ import br.com.covidbr.data.contry.Contry
 import br.com.covidbr.data.contry.ContryRecord
 import br.com.covidbr.data.contry.CountryRepository
 import br.com.covidbr.extension.unaccent
-import br.com.covidbr.ui.filter.Filter
+import br.com.covidbr.data.Filter
 import kotlinx.coroutines.launch
 import java.util.*
 

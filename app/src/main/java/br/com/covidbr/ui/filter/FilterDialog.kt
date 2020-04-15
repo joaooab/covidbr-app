@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.fragment.app.DialogFragment
 import br.com.covidbr.R
-import br.com.covidbr.ui.filter.Filter.Companion.ORDER_DECEASE
-import br.com.covidbr.ui.filter.Filter.Companion.ORDER_INFECTED
-import br.com.covidbr.ui.filter.Filter.Companion.ORDER_NAME
-import br.com.covidbr.ui.filter.Filter.Companion.TYPE_ASC
-import br.com.covidbr.ui.filter.Filter.Companion.TYPE_DESC
+import br.com.covidbr.data.Filter
+import br.com.covidbr.data.Filter.Companion.ORDER_DECEASE
+import br.com.covidbr.data.Filter.Companion.ORDER_INFECTED
+import br.com.covidbr.data.Filter.Companion.ORDER_NAME
+import br.com.covidbr.data.Filter.Companion.TYPE_ASC
+import br.com.covidbr.data.Filter.Companion.TYPE_DESC
 import kotlinx.android.synthetic.main.dialog_filter.*
 
 class FilterDialog : DialogFragment() {

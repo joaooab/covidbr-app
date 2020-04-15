@@ -1,6 +1,7 @@
 package br.com.covidbr.di
 
 import br.com.covidbr.data.contry.CountryService
+import br.com.covidbr.data.dashboard.DashboardService
 import br.com.covidbr.data.news.NewsService
 import br.com.covidbr.data.region.RegionService
 import org.koin.dsl.module
@@ -11,7 +12,9 @@ val serviceModule = module {
     single {
         createWebService<RegionService>("https://api.apify.com/v2/key-value-stores/TyToNta7jGKkpszMZ/records/")
     }
-
+    single {
+        createWebService<DashboardService>("https://api.apify.com/v2/datasets/3S2T1ZBxB9zhRJTBB/")
+    }
     single {
         createWebService<CountryService>("https://covidapi.info/api/v1/global/")
     }

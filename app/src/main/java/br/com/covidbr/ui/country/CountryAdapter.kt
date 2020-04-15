@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.covidbr.R
 import br.com.covidbr.data.contry.ContryRecord
 import br.com.covidbr.extension.format
-import br.com.covidbr.ui.filter.Filter
-import br.com.covidbr.ui.filter.Filter.Companion.ORDER_NAME
+import br.com.covidbr.data.Filter
+import br.com.covidbr.data.Filter.Companion.ORDER_NAME
 import kotlinx.android.synthetic.main.item_record_country.view.*
 
 
