@@ -16,22 +16,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        key {
-            storeFile file('xxx')
-            storePassword 'xxxx'
-            keyAlias 'upload'
-            keyPassword 'xxxx'
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true
-            zipAlignEnabled false
-            shrinkResources false
-            debuggable true
-            signingConfig signingConfigs.key
+            zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -67,6 +56,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //add viewmodel and lifecycle

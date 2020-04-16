@@ -28,7 +28,7 @@ class RegionViewModel(val repository: RegionRepository) : ViewModel() {
                 _records.value = repository.getLatest()
             } catch (e: Exception) {
                 e.printStackTrace()
-                onError.value = e.localizedMessage
+                onError.value = e.message
             } finally {
                 isLoading.value = false
             }
