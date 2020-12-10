@@ -1,4 +1,4 @@
-# covidbr
+# CovidBr
 
 Aplicativo suspenso na play store :closed_lock_with_key:
 
