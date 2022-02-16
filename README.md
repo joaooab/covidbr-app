@@ -1,6 +1,6 @@
 # CovidBr
 
-App suspended because of covid politcs :closed_lock_with_key:
+App suspended on Google Play because of covid politcs :closed_lock_with_key:
 
 
 | | | | |
