@@ -1,6 +1,6 @@
 # CovidBr
 
-Aplicativo suspenso na play store :closed_lock_with_key:
+App suspended because of covid politcs :closed_lock_with_key:
 
 
 | | | | |
